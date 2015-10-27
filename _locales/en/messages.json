@@ -68,8 +68,8 @@
 	"placeholderHistory": {
 		"message": "Would you like to repeat a recent search ?"
 	},
-	"labelSendEmailLowFares": {
-		"message": "Tell me about lower fares"
+	"labelSendEmailCheapFlights": {
+		"message": "Warn me about cheap flights"
 	},
 	"labelEmail": {
 		"message": "Email"
@@ -82,6 +82,12 @@
 	},
 	"placeholderPriceEmail": {
 		"message": "What is the maximum you want to pay ?"
+	},
+	"labelResetDates": {
+		"message": "Reset"
+	},
+	"tooltipResetDates": {
+		"message": "Reset selected dates"
 	},
 	"labelChangePassengers": {
 		"message": "Change number of passengers"
@@ -100,6 +106,15 @@
 	},
 	"labelStop": {
 		"message": "Stop"
+	},
+	"labelTabOneWay": {
+		"message": "One-way"
+	},
+	"labelTabRoundTrip": {
+		"message": "Round-trip"
+	},
+	"labelTabQtyDays": {
+		"message": "Trip duration"
 	},
 	"tooltipDonation": {
 		"message": "Make a donation to help improving this app!"
@@ -159,7 +174,7 @@
 		"message": "Airline"
 	},
 	"daysOneWay": {
-		"message": "Only one way flights"
+		"message": "Only one way"
 	},
 	"daysReturnSameDay": {
 		"message": "Return the same day"
@@ -170,7 +185,7 @@
 	"daysPlural": {
 		"message": "days"
 	},
-	"messagesSendEmailLowFares": {
+	"messagesSendEmailCheapFlights": {
 		"message": "I'll repeat this search from time to time and I send you an email to <strong>EMAIL</strong> when I find it for <strong>PRICE_EMAIL</strong> or less (miles or dollars)."
 	},
 	"messagesSelectAtLeastOneOrigin": {
@@ -203,10 +218,16 @@
 	"messagesFoundFlightsPlural": {
 		"message": "NUMBER_OF_FLIGHTS dates found"
 	},
-	"labelResetDates": {
-		"message": "Reset"
+	"messagesReturnsBeforeDepartures": {
+		"message": "Select a return date after the departure date"
 	},
-	"tooltipResetDates": {
-		"message": "Reset selected dates"
+	"messagesMaxDateRequests": {
+		"message": "Select up to MAX_DATE_REQUESTS dates"
+	},
+	"emailTemplate": {
+		"message": "The following dates have lower price than PRICE_EMAIL:<br>DATES<br><br>Regards,<br>"
+	},
+	"emailSubject": {
+		"message": "Cheap flights found"
 	}
 }

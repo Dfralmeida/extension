@@ -68,7 +68,7 @@
 	"placeholderHistory": {
 		"message": "Deseja repetir uma busca antiga ?"
 	},
-	"labelSendEmailLowFares": {
+	"labelSendEmailCheapFlights": {
 		"message": "Avisar quando preço baixar"
 	},
 	"labelEmail": {
@@ -82,6 +82,12 @@
 	},
 	"placeholderPriceEmail": {
 		"message": "Qual o máximo que deseja pagar ?"
+	},
+	"labelResetDates": {
+		"message": "Limpar"
+	},
+	"tooltipResetDates": {
+		"message": "Limpar datas selecionadas"
 	},
 	"labelChangePassengers": {
 		"message": "Alterar quantidade de passageiros"
@@ -100,6 +106,15 @@
 	},
 	"labelStop": {
 		"message": "Parar"
+	},
+	"labelTabOneWay": {
+		"message": "Somente ida"
+	},
+	"labelTabRoundTrip": {
+		"message": "Ida e Volta"
+	},
+	"labelTabQtyDays": {
+		"message": "Duração da viagem"
 	},
 	"tooltipDonation": {
 		"message": "Faça uma doação para continuar melhorando esse app!"
@@ -159,7 +174,7 @@
 		"message": "Companhia"
 	},
 	"daysOneWay": {
-		"message": "Somente vôos de ida"
+		"message": "Somente ida"
 	},
 	"daysReturnSameDay": {
 		"message": "Voltar no mesmo dia"
@@ -170,7 +185,7 @@
 	"daysPlural": {
 		"message": "dias"
 	},
-	"messagesSendEmailLowFares": {
+	"messagesSendEmailCheapFlights": {
 		"message": "Vou repetir a busca de tempos em tempos e mando email para <strong>EMAIL</strong> quando achar por <strong>PRICE_EMAIL</strong> ou menos (milhas ou reais)."
 	},
 	"messagesSelectAtLeastOneOrigin": {
@@ -203,10 +218,16 @@
 	"messagesFoundFlightsPlural": {
 		"message": "NUMBER_OF_FLIGHTS datas encontradas"
 	},
-	"labelResetDates": {
-		"message": "Limpar"
+	"messagesReturnsBeforeDepartures": {
+		"message": "Selecione uma data de volta depois da data de ida"
 	},
-	"tooltipResetDates": {
-		"message": "Limpar datas selecionadas"
+	"messagesMaxDateRequests": {
+		"message": "Selecione no máximo MAX_DATE_REQUESTS datas"
+	},
+	"emailTemplate": {
+		"message": "As seguintes datas têm preço menor que PRICE_EMAIL:<br>DATES<br><br>Atenciosamente,<br>"
+	},
+	"emailSubject": {
+		"message": "Passagens baratas encontradas"
 	}
 }

@@ -1,30 +1,37 @@
-(function (RequestManager) {
+(function (RequestManager, airportsById, airlinesByCode, APP_NAME) {
 	'use strict';
 
 	function SkyScanner() {
 		var self = this;
 		self.parent.push.call(self);
 
-		const SERVICE_BASE_URL = 'http://www.skyscanner.com.br/dataservices/routedate/v2.0/',
+		var SERVICE_BASE_URL = 'http://www.skyscanner.com.br/dataservices/routedate/v2.0/',
 			PUBLIC_BASE_URL = 'http://www.skyscanner.com.br/transporte/passagens-aereas/';
 
 		//public methods
 		self.sendRequest = function (request, successCallback, failCallback, time) {
 			self.parent.sendRequest({
 				request: request,
+				method: isSessionSet(request) ? 'GET' : 'POST',
 				url: getServiceUrl(request),
 				headers: {
-					'Content-type': 'application/x-www-form-urlencoded'
+					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 				},
 				time: time,
 				successCallback: successCallback,
 				failCallback: failCallback,
 				callback: function (responseText) {
-					var parser = new DOMParser();
-					var response = parser.parseFromString(responseText, 'text/html');
-					var info = mapAjaxResponse(request, response);
+					var response = !!responseText ? JSON.parse(responseText) : {};
+					
+					if (isSessionSet(response))
+						request.SessionKey = response.SessionKey;
 
-					successCallback(request, info);
+					request.info = mapAjaxResponse(request, response);
+					
+					if (isIncomplete(response) && !self.parent.checkGiveUp(request))
+						throw 'Not ready yet. Try again later';
+
+					successCallback(request, request.info);
 				},
 				formData: getFormData(request)
 			});
@@ -49,7 +56,7 @@
 			pp.push('preferdirects=false');
 			pp.push('outboundaltsenabled=false');
 			pp.push('inboundaltsenabled=true');
-			pp.push('rtn=0');
+			pp.push('rtn=' + (request.return !== null ? 1 : 0));
 			pp.push('utm_source=' + APP_NAME);
 
 			return PUBLIC_BASE_URL + p.join('/') + '?' + pp.join('&');
@@ -59,78 +66,164 @@
 
 		// private methods
 		var getServiceUrl = function (request) {
-			var p = [];
-
-			p.push('use204=true');
-			p.push('abvariant=fps_cache_reuse_v2_01%3Aaa%7CFss_BackButton_V1%3Ab%7CFss_DateNudger_V0%3Ab%7Crts_npt_toproutes_v1%3Aa%7CFss_MobileTap_V0%3Aa');
-
-			return SERVICE_BASE_URL + '?' + p.join('&');
-
-			// http://www.skyscanner.com.br/dataservices/routedate/v2.0/?use204=true&abvariant=fps_cache_reuse_v2_01%3Aaa%7CFss_BackButton_V1%3Ab%7CFss_DateNudger_V0%3Ab%7Crts_npt_toproutes_v1%3Aa%7CFss_MobileTap_V0%3Aa
+			return SERVICE_BASE_URL + (!isSessionSet(request) ? '' : request.SessionKey) + '?use204=true';
+			// http://www.skyscanner.com.br/dataservices/routedate/v2.0/?use204=true
 		};
 
 		var getFormData = function (request) {
+			if (isSessionSet(request)) return;
+
 			var p = [];
 
-			p.push('FROM_PAGE=SEARCH');
-			p.push('MergeCodeshares:false');
-			p.push('SkipMixedAirport:false');
-			p.push('OriginPlace:' + request.origin);
-			p.push('DestinationPlace:' + request.destination);
-			p.push('OutboundDate:' + request.departure.toDateFormat('yyyy-MM-dd'));
-			p.push('InboundDate:' + (request.return !== null ? request.return.toDateFormat('yyyy-MM-dd') : ''));
-			p.push('Passengers.Adults:' + request.adults);
-			p.push('Passengers.Children:' + request.children);
-			p.push('Passengers.Infants:' + request.infants);
-			p.push('UserInfo.CountryId:BR');
-			p.push('UserInfo.LanguageId:PT');
-			p.push('UserInfo.CurrencyId:BRL');
-			p.push('CabinClass:Economy');
-			p.push('UserInfo.ChannelId:transportfunnel');
-			p.push('JourneyModes:flight');
-			p.push('PriceForPassengerGroup:true');
-			p.push('RequestId:ae7249de-f8ae-4df1-b620-6ae42bddf88e');
-			p.push('DestinationAlternativePlaces:');
+			var originCode = request.origin;
+			var origin = airportsById[request.origin];
+			if (!!origin && !!origin.cityId)
+				originCode = origin.cityId;
+
+			var destinationCode = request.destination;
+			var destination = airportsById[request.destination];
+			if (!!destination && !!destination.cityId)
+				destinationCode = destination.cityId;
+
+			p.push('MergeCodeshares=false');
+			p.push('SkipMixedAirport=false');
+			p.push('OriginPlace=' + originCode);
+			p.push('DestinationPlace=' + destinationCode);
+			p.push('OutboundDate=' + request.departure.toDateFormat('yyyy-MM-dd'));
+			p.push('InboundDate=' + (request.return !== null ? request.return.toDateFormat('yyyy-MM-dd') : ''));
+			p.push('Passengers.Adults=' + request.adults);
+			p.push('Passengers.Children=' + request.children);
+			p.push('Passengers.Infants=' + request.infants);
+			p.push('UserInfo.CountryId=BR');
+			p.push('UserInfo.LocaleName=pt-BR');
+			p.push('UserInfo.CurrencyId=BRL');
+			p.push('CabinClass=Economy');
+			p.push('UserInfo.ChannelId=transportfunnel');
+			p.push('JourneyModes=flight');
+			p.push('PriceForPassengerGroup=true');
+			p.push('RequestId=' + generateUUID());
 
 			return p.join('&');
 
-			// MergeCodeshares=false&SkipMixedAirport=false&OriginPlace=ATH&DestinationPlace=ISTA&OutboundDate=2015-07-22&InboundDate=&Passengers.Adults=1&Passengers.Children=0&Passengers.Infants=0&UserInfo.CountryId=BR&UserInfo.LanguageId=PT&UserInfo.CurrencyId=BRL&CabinClass=Economy&UserInfo.ChannelId=transportfunnel&JourneyModes=flight&PriceForPassengerGroup=true&RequestId=ae7249de-f8ae-4df1-b620-6ae42bddf88e&DestinationAlternativePlaces=IST%2CSAW%2CBTZ
+			// MergeCodeshares=false&SkipMixedAirport=false&OriginPlace=HKG&DestinationPlace=CNX&OutboundDate=2016-01-20&InboundDate=&Passengers.Adults=1&Passengers.Children=0&Passengers.Infants=0&UserInfo.CountryId=BR&UserInfo.LocaleName=pt-BR&UserInfo.CurrencyId=BRL&CabinClass=Economy&UserInfo.ChannelId=transportfunnel&JourneyModes=flight&PriceForPassengerGroup=true&RequestId=f599a3f9-3795-4e48-930d-c1732b04a51b
 		};
 
 		var mapAjaxResponse = function (request, response) {
-			var info = self.parent.returnDefault();
+			var info = request.info || self.parent.returnDefault();
+			var byCompany = {};
 
-			$('.result > .flight', response).each(function () {
-				var airline = $(this).find('.airlineName').text().trim();
-				var price = $(this).find('.price').text().trim().replace('.', '');
+			if (!response || !response.Itineraries || response.Itineraries.length === 0)
+				return info;
 
-				var stops = {};
-				$(this).find('.flightDetail').each(function () {
-					var stop = 2;
-					if ($(this).find('span:contains("2 escalas")').length > 0) stop = 2;
-					else if ($(this).find('span:contains("1 escala")').length > 0) stop = 1;
-					else if ($(this).find('span:contains("Direto")').length > 0) stop = 0;
+			var outboundLegsById = {},
+				inboundLegsById = {},
+				carriersById = {},
+				quotesById = {},
+				i;
 
-					stops[stop] = true;
-				});
+			for (i = 0; i < (response.OutboundItineraryLegs || []).length; i++) {
+				var outboundLeg = response.OutboundItineraryLegs[i];
+				outboundLegsById[outboundLeg.Id] = outboundLeg;
+			}
 
-				stops = Object.keys(stops);
-				self.parent.setAirlinePrices(info, airline, request.url);
-				for (var i in stops) {
-					info.byCompany[airline][stops[i]].price = self.parent.getMinPrice(info.byCompany[airline][stops[i]].price, price);
-					info.prices[stops[i]] = self.parent.getMinPrice(info.prices[stops[i]], price);
+			for (i = 0; i < (response.InboundItineraryLegs || []).length; i++) {
+				var inboundLeg = response.InboundItineraryLegs[i];
+				inboundLegsById[inboundLeg.Id] = inboundLeg;
+			}
+
+			for (i = 0; i < (response.Carriers || []).length; i++) {
+				var carrier = response.Carriers[i];
+				carriersById[carrier.Id] = carrier;
+			}
+
+			for (i = 0; i < (response.Quotes || []).length; i++) {
+				var quote = response.Quotes[i];
+				quotesById[quote.Id] = quote;
+			}
+
+			for (i = 0; i < response.Itineraries.length; i++) {
+				var itinerary = response.Itineraries[i];
+
+				var outboundLeg = outboundLegsById[itinerary.OutboundLegId];
+				if (!outboundLeg || !outboundLeg.OperatingCarrierIds ||
+					outboundLeg.OperatingCarrierIds.length === 0) continue;
+
+				var carrierId = outboundLeg.OperatingCarrierIds[0];
+				var carrier = carriersById[carrierId];
+				if (!carrier) continue;
+
+				var airline = carrier.Name;
+				if (!!carrier.DisplayCode) {
+					var airlineObj = airlinesByCode[carrier.DisplayCode];
+					if (!!airlineObj)
+						airline = airlineObj.text;
 				}
-			});
+
+				var inboundStops = 0;
+				var inboundLeg = inboundLegsById[itinerary.InboundLegId];
+				if (!!inboundLeg)
+					inboundStops = inboundLeg.StopsCount;
+
+				if (!itinerary.PricingOptions || itinerary.PricingOptions.length === 0) continue;
+
+				var quoteIds = itinerary.PricingOptions[0].QuoteIds;
+				if (!quoteIds || quoteIds.length === 0) continue;
+
+				var price = 0;
+				for (var j = 0; j < quoteIds.length; j++) {
+					var quoteId = quoteIds[j];
+					var quote = quotesById[quoteId];
+					if (!quote) continue;
+
+					price += quote.Price || 0;
+				}
+
+				var stops = Math.max(outboundLeg.StopsCount, inboundStops);
+				stops = Math.min(Math.max(stops, 0), 2);
+
+				if (!byCompany[airline]) byCompany[airline] = self.parent.pricesDefault();
+				byCompany[airline][stops] = self.parent.getMinPrice(byCompany[airline][stops], price);
+
+				info.prices[stops] = self.parent.getMinPrice(info.prices[stops], price);
+			}
+
+			self.parent.setAirlinePrices(info, byCompany);
 
 			return info;
+		};
+
+		var isSessionSet = function (data) {
+			return !!data && !!data.SessionKey;
+		};
+
+		var isIncomplete = function (response) {
+			if (!response || !response.QuoteRequests || response.QuoteRequests.length === 0)
+				return true;
+			
+			for (var i = 0; i < response.QuoteRequests.length; i++)
+				if (response.QuoteRequests[i].HasLiveUpdateInProgress)
+					return true;
+
+			return false;
+		};
+
+		// see more on http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript/8809472#8809472
+		function generateUUID() {
+			var d = new Date().getTime();
+			var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+				var r = (d + Math.random() * 16) % 16 | 0;
+				d = Math.floor(d / 16);
+				return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+			});
+			return uuid;
 		};
 
 		return self;
 	}
 
-	SkyScanner.prototype = new RequestManager('SkyScanner', 'Sky scanner', 2000, 3);
+	SkyScanner.prototype = new RequestManager('Skyscanner', 'Skyscanner', 2000, 4, 3);
 	SkyScanner.prototype.constructor = SkyScanner;
 	SkyScanner.prototype.parent = RequestManager.prototype;
 
-	// new SkyScanner();
-})(window.RequestManager);
+	new SkyScanner();
+})(window.RequestManager, window.airportsById, window.airlinesByCode, window.APP_NAME);

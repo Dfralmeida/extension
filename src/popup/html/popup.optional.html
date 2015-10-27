@@ -1,0 +1,53 @@
+<!-- links to show optional config -->
+<div layout>
+	<label class="secondary" flex>
+		<input type="checkbox" ng-model="vm.showSendEmailCheapFlights" ng-checked="vm.showSendEmailCheapFlights" />
+		{{ ::labels.sendEmailCheapFlights }}
+	</label>
+	
+	<label class="secondary" flex>
+		<input type="checkbox" ng-model="vm.showPassengers" ng-checked="vm.showPassengers" />
+		{{ ::labels.changePassengers }}
+	</label>
+</div>
+
+<!-- send email -->
+<div layout="column" ng-if="vm.showSendEmailCheapFlights">
+	<md-input-container flex>
+		<label>{{ ::placeholders.email }}</label>
+		<input required type="email" name="email" ng-model="vm.model.email"
+			   minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+	</md-input-container>
+
+	<md-input-container flex>
+		<label>{{ ::placeholders.priceEmail }}</label>
+		<input required type="number" step="1" name="priceEmail" ng-model="vm.model.priceEmail" min="1" max="1000000" />
+	</md-input-container>
+
+	<label class="secondary" ng-bind-html="messages.sendEmailCheapFlights | replace : 'EMAIL' : vm.model.email | replace : 'PRICE_EMAIL' : vm.model.priceEmail" ng-if="form.email.$dirty && !form.email.$invalid && form.priceEmail.$dirty && !form.priceEmail.$invalid && vm.model.email && vm.model.priceEmail" style="padding-left: 4px;" flex>
+	</label>
+</div>
+
+<!-- passengers -->
+<div layout ng-if="vm.showPassengers" ng-class="{ 'has-error': vm.model.adults == 0 && vm.model.children == 0 && vm.model.infants == 0 }">
+	<md-input-container flex>
+		<label>{{ ::labels.adults }}</label>
+		<md-select ng-model="vm.model.adults">
+			<md-option ng-repeat="item in [0, 1, 2, 3, 4, 5]" value="{{ item }}">{{ item }}</md-option>
+		</md-select>
+	</md-input-container>
+	
+	<md-input-container flex>
+		<label>{{ ::labels.children }}</label>
+		<md-select ng-model="vm.model.children">
+			<md-option ng-repeat="item in [0, 1, 2, 3, 4, 5]" value="{{ item }}">{{ item }}</md-option>
+		</md-select>
+	</md-input-container>
+	
+	<md-input-container flex>
+		<label>{{ ::labels.infants }}</label>
+		<md-select ng-model="vm.model.infants">
+			<md-option ng-repeat="item in [0, 1, 2, 3, 4, 5]" value="{{ item }}">{{ item }}</md-option>
+		</md-select>
+	</md-input-container>
+</div>

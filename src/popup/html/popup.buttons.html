@@ -1,0 +1,24 @@
+<!-- start button -->
+<a href="" class="btn btn-primary btn-sm pull-right" ng-click="vm.start()" ng-disabled="form.$invalid" style="text-transform:uppercase"  autofocus>
+	{{ ::labels.start }}
+</a>
+
+<!-- stop button -->
+<a href="" class="btn btn-default btn-sm pull-right" ng-click="vm.stop()" ng-disabled="vm.initialNumberOfFlights <= vm.gridOptions.data.length" style="text-transform:uppercase;margin:0 5px 0 0;">
+	{{ ::labels.stop }}
+</a>
+
+<!-- donation link -->
+<a href="http://novo.vakinha.com.br/vaquinha/passagens-mais-baratas-pra-todos" class="pull-right form-icon" uib-tooltip="{{ ::tooltips.donation }}" tooltip-placement="top">
+	<i class="mdi-editor-attach-money"></i>
+</a>
+
+<!-- delete history and reset form link -->
+<a href="" class="pull-right form-icon" ng-click="vm.deleteHistory()" uib-tooltip="{{ ::tooltips.deleteHistory }}" tooltip-placement="top">
+	<i class="mdi-action-delete"></i>
+</a>
+
+<!-- info link -->
+<a href="" class="pull-right form-icon" uib-tooltip-html="tooltips.main" tooltip-placement="top">
+	<i class="mdi-action-info-outline"></i>
+</a>

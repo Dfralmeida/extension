@@ -1,27 +1,35 @@
-<div ng-if="vm.initialNumberOfFlights > 0" style="text-align:center;padding-top: 5px;">
+<div ng-if="vm.initialNumberOfFlights > 0">
 	<span ng-if="vm.gridOptions.data.length < vm.initialNumberOfFlights">
 		<span ng-show="vm.initialNumberOfFlights === 1">
 			{{ ::messages.loadingSingular }}
 		</span>
+		
 		<span ng-show="vm.initialNumberOfFlights > 1">
 			{{ messages.loadingPlural | replace : 'NUMBER_OF_FLIGHTS' : vm.initialNumberOfFlights }}
 		</span>
+		
 		<span ng-show="vm.gridOptions.data.length === 1">
 			{{ ::messages.foundFlightsSingular }}
 		</span>
+		
 		<span ng-show="vm.gridOptions.data.length > 1">
 			{{ messages.foundFlightsPlural | replace : 'NUMBER_OF_FLIGHTS' : vm.gridOptions.data.length }}
 		</span>
 	</span>
-	<span ng-if="vm.gridOptions.data.length >= vm.initialNumberOfFlights">{{ ::messages.searchFinished }}</span>
-	<a href="">
-		<i class="mdi-navigation-expand-more" ng-hide="vm.showForm" ng-click="vm.showForm = true" tooltip="{{ ::tooltips.expandMore }}"></i>
+	
+	<span ng-if="vm.gridOptions.data.length >= vm.initialNumberOfFlights">
+		{{ ::messages.searchFinished }}
+	</span>
+	
+	<a href="" ng-hide="vm.showForm">
+		<i class="mdi-navigation-expand-more" ng-click="vm.showForm = true" uib-tooltip="{{ ::tooltips.expandMore }}"></i>
 	</a>
-	<a href="">
-		<i class="mdi-navigation-expand-less" ng-show="vm.showForm" ng-click="vm.showForm = false" tooltip="{{ ::tooltips.expandLess }}"></i>
+	
+	<a href="" ng-show="vm.showForm">
+		<i class="mdi-navigation-expand-less" ng-click="vm.showForm = false" uib-tooltip="{{ ::tooltips.expandLess }}"></i>
 	</a>
 </div>
 
-<div ng-if="vm.messageError !== ''" style="text-align:center">
-	<span class="text-danger">{{ vm.messageError }}</span>
-</div>
+<span class="text-danger" ng-if="vm.messageError !== ''">
+	{{ vm.messageError }}
+</span>

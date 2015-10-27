@@ -1,0 +1,233 @@
+{
+	"extensionName": {
+		"message": "Pasajes aéreos Genghis"
+	},
+	"extensionDescription": {
+		"message": "Encuentre pasajes para varias ciudades en varios días, todo en un único paso. Rápido, seguro y lo mejor: Gratis!"
+	},
+	"labelOrigins": {
+		"message": "Origen"
+	},
+	"placeholderOrigins": {
+		"message": "¿Desde dónde prefiere salir?"
+	},
+	"tooltipOrigins": {
+		"message": "Las ciudades desde dónde puede partir. Salir de una ciudad cercana puede ser mas económico"
+	},
+	"labelDestinations": {
+		"message": "Destino"
+	},
+	"placeholderDestinations": {
+		"message": "¿A dónde quiere ir?"
+	},
+	"tooltipDestinations": {
+		"message": "Las ciudades que usted desea conocer en este viaje. Seleccione varias y encuentre la mas económica"
+	},
+	"labelDepartures": {
+		"message": "Ida"
+	},
+	"tooltipDepartures": {
+		"message": "Los días en que usted puede partir"
+	},
+	"labelRange": {
+		"message": "Seleccionar un rango"
+	},
+	"tooltipRange": {
+		"message": "Escoja un rango de días seguidos seleccionando el primero y el último"
+	},
+	"labelReturns": {
+		"message": "Vuelta"
+	},
+	"tooltipReturns": {
+		"message": "Los días exactos en que usted quiere volver"
+	},
+	"labelQtyDays": {
+		"message": "Duración"
+	},
+	"placeholderQtyDays": {
+		"message": "¿Cuántos días de viaje?"
+	},
+	"tooltipQtyDays": {
+		"message": "La duración del viaje. En vez de indicar los días exactos da regreso, usted puede querer pasar cierta cantidad de días viajando"
+	},
+	"labelSite": {
+		"message": "Sitio"
+	},
+	"placeholderSite": {
+		"message": "¿En qué sitio web desea buscar?"
+	},
+	"tooltipSite": {
+		"message": "Escoja en cuál sitio web desea buscar"
+	},
+	"labelHistory": {
+		"message": "Historial"
+	},
+	"tooltipHistory": {
+		"message": "Escoja una de sus búsquedas recientes"
+	},
+	"placeholderHistory": {
+		"message": "¿Desea repetir una búsqueda reciente?"
+	},
+	"labelSendEmailCheapFlights": {
+		"message": "Avisarme cuando el precio baje"
+	},
+	"labelEmail": {
+		"message": "Email"
+	},
+	"placeholderEmail": {
+		"message": "¿Cuál es su email?"
+	},
+	"labelPriceEmail": {
+		"message": "Precio"
+	},
+	"placeholderPriceEmail": {
+		"message": "¿Cuánto es el máximo precio que desea pagar?"
+	},
+	"labelResetDates": {
+		"message": "Limpiar"
+	},
+	"tooltipResetDates": {
+		"message": "Limpiar fechas seleccionadas"
+	},
+	"labelChangePassengers": {
+		"message": "Cambiar la cantidad de pasajeros"
+	},
+	"labelAdults": {
+		"message": "Adultos"
+	},
+	"labelChildren": {
+		"message": "Menores"
+	},
+	"labelInfants": {
+		"message": "Bebés"
+	},
+	"labelStart": {
+		"message": "Buscar"
+	},
+	"labelStop": {
+		"message": "Detener"
+	},
+	"labelTabOneWay": {
+		"message": "Sólo ida"
+	},
+	"labelTabRoundTrip": {
+		"message": "Ida y vuelta"
+	},
+	"labelTabQtyDays": {
+		"message": "Duración del viaje"
+	},
+	"tooltipDonation": {
+		"message": "Haga una donación para continuar mejorando esta app!"
+	},
+	"tooltipDeleteHistory": {
+		"message": "Borrar historial"
+	},
+	"tooltipExpandMore": {
+		"message": "Mostrar búsqueda"
+	},
+	"tooltipExpandLess": {
+		"message": "Mostrar únicamente resultados encontrados"
+	},
+	"tooltipMain": {
+		"message": "<div style='text-align:left'>Usted puede selecionar: <br/>Una o más ciudades de origen <br/>Una o más ciudades de destino <br/>Uno o más días de partida <br/>Duración del viaje o días de regreso <br/>La cantidad de adultos, menores y bebés <br/>El sitio en que desea consultar <br/>Un email para recibir alertas de bajos precios <br/><br/>Sugerencias? <strong>genghislabs@gmail.com</strong></div>"
+	},
+	"gridOriginDestination": {
+		"message": "Desde-Hacia"
+	},
+	"gridOriginDestinationTooltip": {
+		"message": "Desde-Hacia"
+	},
+	"gridDeparture": {
+		"message": "Ida"
+	},
+	"gridDepartureTooltip": {
+		"message": "Ida"
+	},
+	"gridReturn": {
+		"message": "Vta."
+	},
+	"gridReturnTooltip": {
+		"message": "Vuelta"
+	},
+	"gridNonStop": {
+		"message": "Dir."
+	},
+	"gridNonStopTooltip": {
+		"message": "Directo"
+	},
+	"gridOneStop": {
+		"message": "1 esc."
+	},
+	"gridOneStopTooltip": {
+		"message": "1 escala"
+	},
+	"gridTwoStops": {
+		"message": "2 esc."
+	},
+	"gridTwoStopsTooltip": {
+		"message": "2 o más escalas"
+	},
+	"gridCompany": {
+		"message": "Aerolínea"
+	},
+	"gridCompanyTooltip": {
+		"message": "Aerolínea"
+	},
+	"daysOneWay": {
+		"message": "Sólo ida"
+	},
+	"daysReturnSameDay": {
+		"message": "Volver el mismo día"
+	},
+	"daysSingular": {
+		"message": "día"
+	},
+	"daysPlural": {
+		"message": "días"
+	},
+	"messagesSendEmailCheapFlights": {
+		"message": "Voy a repetir la busca periódicamente y mandaré un email a <strong>EMAIL</strong> cuando la encuentre por <strong>PRICE_EMAIL</strong> o menos (millas o dinero)."
+	},
+	"messagesSelectAtLeastOneOrigin": {
+		"message": "Selecione al menos un aeropuerto de origen"
+	},
+	"messagesSelectAtLeastOneDestination": {
+		"message": "Selecione al menos un aeropuerto de destino"
+	},
+	"messagesSameOriginAndDestination": {
+		"message": "El aeropuerto de origen no puede ser igual al de destino"
+	},
+	"messagesSelectAtLeastOneDeparture": {
+		"message": "Selecione por lo menos una fecha de salida"
+	},
+	"messagesSelectAtLeastOnePassenger": {
+		"message": "Selecione por lo menos un pasajero"
+	},
+	"messagesSearchFinished": {
+		"message": "Búsqueda finalizada!"
+	},
+	"messagesLoadingSingular": {
+		"message": "Cargando 1 fecha ..."
+	},
+	"messagesLoadingPlural": {
+		"message": "Cargando NUMBER_OF_FLIGHTS fechas ..."
+	},
+	"messagesFoundFlightsSingular": {
+		"message": "1 fecha encontrada"
+	},
+	"messagesFoundFlightsPlural": {
+		"message": "NUMBER_OF_FLIGHTS fechas encontradas"
+	},
+	"messagesReturnsBeforeDepartures": {
+		"message": "Selecione una fecha de vuelta posterior a la fecha de salida"
+	},
+	"messagesMaxDateRequests": {
+		"message": "Selecione hasta MAX_DATE_REQUESTS fechas"
+	},
+	"emailTemplate": {
+		"message": "Las siguientes fechas tienen un precio menor que PRICE_EMAIL:<br>DATES<br><br>Atentamente,<br>"
+	},
+	"emailSubject": {
+		"message": "Vuelos baratos encontrados"
+	}
+}

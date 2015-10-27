@@ -22,7 +22,7 @@ Date.prototype.toDateFormat = function (format) {
 
     return format.toLowerCase()
         .replace(/yyyy/g, this.getFullYear())
-        .replace(/yy/g, this.getYear())
+        .replace(/yy/g, this.getFullYear().toString().substr(2,2))
         .replace(/mm/g, this.getMonth2())
         .replace(/m/g, this.getMonth() + 1)
         .replace(/dd/g, this.getDate2())

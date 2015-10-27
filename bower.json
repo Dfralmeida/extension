@@ -1,6 +1,6 @@
 {
-  "name": "app",
-  "version": "2.0.0",
+  "name": "genghis-extension",
+  "version": "2.4",
   "homepage": "https://github.com/brenovieira/extensao",
   "authors": [
     "brenovieira <genghislabs@gmail.com>"
@@ -17,13 +17,16 @@
     "tests"
   ],
   "dependencies": {
-    "angular-i18n": "~1.4.5",
-    "angular-bootstrap": "~0.13.4",
-    "angular-ui-grid": "~3.0.6",
-    "angular-sanitize": "~1.4.5",
+    "angular-i18n": "~1.4.7",
+    "angular-bootstrap": "~0.14.3",
+    "angular-ui-grid": "~3.0.7",
     "bootstrap-material-design": "~0.3.0",
     "bootstrap": "~3.3.5",
-    "gm.datepickerMultiSelect": "gm.datepicker-multi-select#~1.0.6",
-    "ui-select": "angular-ui-select#~0.12.1"
+    "gm.datepickerMultiSelect": "gm.datepicker-multi-select#~1.0.9",
+    "angular": "~1.4.7",
+    "angular-animate": "~1.4.7",
+    "angular-aria": "~1.4.7",
+    "angular-material": "1.0.0-rc1",
+    "jquery": "~2.1.4"
   }
 }

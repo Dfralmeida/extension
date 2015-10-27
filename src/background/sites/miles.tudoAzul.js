@@ -1,4 +1,4 @@
-(function (RequestManager) {
+(function (RequestManager, APP_NAME) {
 	'use strict';
 
 	function TudoAzul() {
@@ -12,7 +12,6 @@
 		self.sendRequest = function (request, successCallback, failCallback, time) {
 			self.parent.sendRequest({
 				request: request,
-				method: 'POST',
 				url: getServiceUrl(request),
 				headers: {
 					'Content-type': 'application/x-www-form-urlencoded'
@@ -32,7 +31,7 @@
 		};
 
 		self.getUrl = function (request) {
-			return SERVICE_BASE_URL + '?utm_source=genghis';
+			return SERVICE_BASE_URL + '?utm_source=' + APP_NAME;
 		};
 
 		// private methods
@@ -126,11 +125,7 @@
 			}
 
 			var info = self.parent.returnDefault();
-			if (isOneWay)
-				info.prices = departurePrices;
-			else
-				self.parent.setTotalPrices(info, departurePrices, returnPrices);
-
+			self.parent.setTotalPrices(info, departurePrices, returnPrices, isOneWay);
 			self.parent.setAirlinePrices(info, byCompany);
 
 			return info;
@@ -139,9 +134,9 @@
 		return self;
 	}
 
-	TudoAzul.prototype = new RequestManager('TudoAzul', 'Tudo Azul - Milhas Azul', 1000, 4);
+	TudoAzul.prototype = new RequestManager('TudoAzul', 'Tudo Azul - Milhas Azul', 1000, 4, 7);
 	TudoAzul.prototype.constructor = TudoAzul;
 	TudoAzul.prototype.parent = RequestManager.prototype;
 
 	new TudoAzul();
-})(window.RequestManager);
+})(window.RequestManager, window.APP_NAME);

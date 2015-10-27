@@ -1,0 +1,45 @@
+<!-- origin airports -->
+<div layout ng-class="{ 'has-error': form.origins.$dirty && vm.model.origins.length === 0 }">
+	<label for="origins" uib-tooltip="{{ ::tooltips.origins }}" flex="15" class="md-chips-label">
+		{{ ::labels.origins }}
+	</label>
+
+	<md-chips ng-model="vm.model.origins" name="origins" id="origins" md-autocomplete-snap="" md-require-match="true" required flex>
+		<md-autocomplete md-selected-item="vm.selectedOrigin" md-search-text="vm.searchOrigin" md-items="item in vm.airports | filter : vm.searchOrigin" md-item-text="item.id" md-autoselect="true" placeholder="{{ ::placeholders.origins }}">
+			<span md-highlight-text="vm.searchOrigin" md-highlight-flags="i">
+				{{ item.text }}
+			</span>
+			<small md-highlight-text="vm.searchOrigin" md-highlight-flags="i" class="autocomplete-small">
+				 {{ item.text2 }} ({{ item.id }})
+			</small>
+		</md-autocomplete>
+
+		<md-chip-template>
+			<strong>{{ $chip.text }}</strong>
+			<em>({{ $chip.id }})</em>
+		</md-chip-template>
+	</md-chips>
+</div>
+
+<!-- destination airports -->
+<div layout ng-class="{ 'has-error': form.destinations.$dirty && (vm.model.destinations.length === 0 || (vm.model.origins.length === 1 && vm.model.destinations.length === 1 && vm.model.origins[0].id === vm.model.destinations[0].id)) }">
+	<label for="destinations" uib-tooltip="{{ ::tooltips.destinations }}" flex="15" class="md-chips-label">
+		{{ ::labels.destinations }}
+	</label>
+
+	<md-chips ng-model="vm.model.destinations" name="destinations" id="destinations" md-autocomplete-snap="" md-require-match="true" required flex>
+		<md-autocomplete md-selected-item="vm.selectedDestination" md-search-text="vm.searchDestination" md-items="item in vm.airports | filter : vm.searchDestination" md-item-text="item.id" md-autoselect="true" placeholder="{{ ::placeholders.destinations }}">
+			<span md-highlight-text="vm.searchDestination" md-highlight-flags="i">
+				{{ item.text }}
+			</span>
+			<small md-highlight-text="vm.searchDestination" md-highlight-flags="i" class="autocomplete-small">
+				 {{ item.text2 }} ({{ item.id }})
+			</small>
+		</md-autocomplete>
+
+		<md-chip-template>
+			<strong>{{ $chip.text }}</strong>
+			<em>({{ $chip.id }})</em>
+		</md-chip-template>
+	</md-chips>
+</div>

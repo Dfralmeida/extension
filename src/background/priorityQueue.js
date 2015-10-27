@@ -5,10 +5,9 @@
 	window.PriorityQueue = (function (SM, RM) {
 		var self = {};
 
-		const GAP_TIME_SERVER = 1000,
-			MAX_WAITING = 4;
-
-		var list = [],
+		var GAP_TIME_SERVER = 1000,
+			MAX_WAITING = 4,
+			list = [],
 			callback,
 			time;
 
@@ -73,6 +72,7 @@
 				request = list.shift(); // remove the first item
 				request.isPriority = true;
 
+				increaseWaiting();
 				sendRequest(request);
 
 			} else {
@@ -93,8 +93,6 @@
 		};
 
 		var sendRequest = function (request) {
-			increaseWaiting();
-
 			setTimeout(function () {
 				var requestManager = RM.getInstance(request.site);
 

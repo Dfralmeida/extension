@@ -9,6 +9,7 @@
 			return {
 				priceInfinity: Number.MAX_SAFE_INTEGER,
 				labels: {
+					extensionName: get('extensionName'),
 					origins: get('labelOrigins'),
 					destinations: get('labelDestinations'),
 					departures: get('labelDepartures'),
@@ -17,7 +18,7 @@
 					qtyDays: get('labelQtyDays'),
 					site: get('labelSite'),
 					history: get('labelHistory'),
-					sendEmailLowFares: get('labelSendEmailLowFares'),
+					sendEmailCheapFlights: get('labelSendEmailCheapFlights'),
 					changePassengers: get('labelChangePassengers'),
 					email: get('labelEmail'),
 					priceEmail: get('labelPriceEmail'),
@@ -27,6 +28,9 @@
 					start: get('labelStart'),
 					stop: get('labelStop'),
 					resetDates: get('labelResetDates'),
+					tabOneWay: get('labelTabOneWay'),
+					tabRoundTrip: get('labelTabRoundTrip'),
+					tabQtyDays: get('labelTabQtyDays'),
 				},
 				placeholders: {
 					origins: get('placeholderOrigins'),
@@ -76,7 +80,7 @@
 					plural: get('daysPlural'),
 				},
 				messages: {
-					sendEmailLowFares: get('messagesSendEmailLowFares'),
+					sendEmailCheapFlights: get('messagesSendEmailCheapFlights'),
 					selectAtLeastOneOrigin: get('messagesSelectAtLeastOneOrigin'),
 					selectAtLeastOneDestination: get('messagesSelectAtLeastOneDestination'),
 					sameOriginAndDestination: get('messagesSameOriginAndDestination'),
@@ -87,6 +91,8 @@
 					loadingPlural: get('messagesLoadingPlural'),
 					foundFlightsSingular: get('messagesFoundFlightsSingular'),
 					foundFlightsPlural: get('messagesFoundFlightsPlural'),
+					returnsBeforeDepartures: get('messagesReturnsBeforeDepartures'),
+					maxDateRequests: get('messagesMaxDateRequests'),
 				}
 			};
 		})());

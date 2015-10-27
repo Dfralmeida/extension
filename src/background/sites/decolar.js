@@ -115,7 +115,7 @@
 		return self;
 	}
 
-	Decolar.prototype = new RequestManager('Decolar', 'Decolar', 1500, 5);
+	Decolar.prototype = new RequestManager('Decolar', 'Decolar', 1500, 5, 2);
 	Decolar.prototype.constructor = Decolar;
 	Decolar.prototype.parent = RequestManager.prototype;
 

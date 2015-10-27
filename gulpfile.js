@@ -8,6 +8,9 @@ var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
 	minifyCss = require('gulp-minify-css'),
 	ngAnnotate = require('gulp-ng-annotate'),
+	rev = require('gulp-rev'),
+	revReplace = require('gulp-rev-replace'),
+	revDel = require('rev-del'),
 	less = require('gulp-less'),
 	zip = require('gulp-zip');
 
@@ -29,17 +32,23 @@ var paths = {
         'src/background/sites/**/*.js'
     ],
 	libs: [
+        'bower_components/jquery/dist/jquery.min.js',
         'bower_components/angular/angular.min.js',
         'bower_components/angular-i18n/angular-locale_pt-br.js',
+        'bower_components/angular-animate/angular-animate.min.js',
+        'bower_components/angular-aria/angular-aria.min.js',
+        'bower_components/angular-material/angular-material.min.js',
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-        'bower_components/angular-sanitize/angular-sanitize.min.js',
         'bower_components/angular-ui-grid/ui-grid.min.js',
-        'bower_components/gm.datepickerMultiselect/dist/gm.datepickerMultiselect.min.js',
-        'bower_components/ui-select/dist/select.min.js',
+        'bower_components/gm.datepickerMultiSelect/dist/gm.datepickerMultiSelect.min.js'
     ],
 	scripts: [
         'src/popup/app.module.js',
-        'src/popup/app.[^module]*.js',
+        'src/popup/app.constants.js',
+        'src/popup/app.config.js',
+        'src/popup/app.run.js',
+        'src/popup/app.controller.js',
+        'src/popup/app.exception.js',
         'src/popup/filters/**/*.js',
     ],
 	less: 'src/popup/app.less',
@@ -60,7 +69,7 @@ gulp.task('clean', function () {
 	});
 });
 
-// Move non-processing files to dist (fonts, html, images, ...)
+// Move non-processed files to dist (fonts, html, images, ...)
 gulp.task('move', function () {
 	return gulp.src(paths.move)
 		.pipe(debug({
@@ -77,7 +86,9 @@ gulp.task('background', function () {
 		}))
 		//.pipe(sourcemaps.init())
 		.pipe(concat(distPaths.background))
-		.pipe(uglify())
+		.pipe(uglify().on('error', function (err) {
+			console.log(err);
+		}))
 		//.pipe(sourcemaps.write())
 		.pipe(gulp.dest(distPaths.dest))
 });
@@ -103,7 +114,9 @@ gulp.task('popup:js', function () {
 			console.log(err);
 		}))
 		.pipe(concat(distPaths.scripts))
-		.pipe(uglify())
+		.pipe(uglify().on('error', function (err) {
+			console.log(err);
+		}))
 		//.pipe(sourcemaps.write())
 		.pipe(gulp.dest(distPaths.dest))
 });
@@ -119,24 +132,62 @@ gulp.task('popup:css', function () {
 		.pipe(gulp.dest(distPaths.dest))
 });
 
+// Revision static asset appending hash
+gulp.task('rev', ['popup:libs', 'popup:js', 'popup:css'], function () {
+	var staticFiles = [
+		distPaths.dest + '/' + distPaths.libs,
+		distPaths.dest + '/' + distPaths.scripts,
+		distPaths.dest + '/' + distPaths.css
+	];
+
+	return gulp.src(staticFiles)
+		.pipe(rev())
+		.pipe(gulp.dest(distPaths.dest))
+		.pipe(rev.manifest())
+		.pipe(revDel({
+			dest: distPaths.dest
+		}))
+		.pipe(gulp.dest(distPaths.dest));
+});
+
+// Rewrite popup.html with revisioned popup files
+gulp.task('revreplace', ['rev'], function () {
+	var manifest = gulp.src(distPaths.dest + '/rev-manifest.json');
+
+	return gulp.src(distPaths.dest + '/popup.html')
+		.pipe(revReplace({
+			manifest: manifest
+		}))
+		.pipe(gulp.dest(distPaths.dest));
+});
+
 // Rerun the task when a file changes
 gulp.task('watch', ['build'], function () {
 	gulp.watch(paths.move, ['move']);
 	gulp.watch(paths.background, ['background']);
-	gulp.watch(paths.libs, ['popup:libs']);
-	gulp.watch(paths.scripts, ['popup:js']);
-	gulp.watch(paths.less, ['popup:css']);
+	gulp.watch(paths.libs, ['popup:libs', 'rev', 'revreplace']);
+	gulp.watch(paths.scripts, ['popup:js', 'rev', 'revreplace']);
+	gulp.watch(paths.less, ['popup:css', 'rev', 'revreplace']);
 });
 
 // The deployment task (no need for watch)
-gulp.task('build', ['clean', 'move', 'background', 'popup:libs', 'popup:js', 'popup:css']);
+gulp.task('build', ['clean', 'move', 'background', 'popup:libs', 'popup:js',
+					'popup:css', 'rev', 'revreplace']);
 
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['build', 'watch']);
 
 // Zip manifest and dist folder to deploy the app
 gulp.task('zip', ['build'], function () {
-	return gulp.src(['manifest.json', '_locales/**/*', distPaths.dest + '/*'], {
+	return gulp.src([
+		'manifest.json',
+		'_locales/**/*',
+		distPaths.dest + '/**',
+		// exclude static non-versioned files
+		'!' + distPaths.dest + '/rev-manifest.json',
+		'!' + distPaths.dest + '/' + distPaths.libs,
+		'!' + distPaths.dest + '/' + distPaths.scripts,
+		'!' + distPaths.dest + '/' + distPaths.css], {
 			base: '.'
 		})
 		.pipe(debug({

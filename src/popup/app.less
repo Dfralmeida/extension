@@ -1,27 +1,25 @@
+@import (inline) "../../bower_components/angular-material/angular-material.min.css";
 @import "../../bower_components/bootstrap/less/bootstrap.less";
+@import "../../bower_components/bootstrap-material-design/less/material.less";
+@import (inline) "../../bower_components/angular-ui-grid/ui-grid.min.css";
+@import (inline) "../../bower_components/angular/angular-csp.css";
 
 // Fonts are not in fonts folder as we are deploying all files into dist (root) folder
 @icon-font-path: "../dist/";
 
-@import "../../bower_components/bootstrap-material-design/less/material.less";
-
 // Override @primary color with one took from _colors.less
-@primary: @light-blue-800;
+@primary: @light-blue-800; //#0277bd
 @info: @light-blue-800;
 @body-bg: @grey-50;
 @popover-background: rgba(101, 101, 101, 0.95);
 
 @material-font-path: "../dist";
+@chip-height: 26px;
+@select-height: 30px;
 
-@import (inline) "../../bower_components/angular-ui-grid/ui-grid.min.css";
-@import (inline) "../../bower_components/ui-select/dist/select.min.css";
-@import (inline) "../../bower_components/angular/angular-csp.css";
 
 html, body {
     width:450px;
-}
-#popup-form {
-	padding: 5px 0;
 }
 #popup-info i {
     display: block;
@@ -31,11 +29,13 @@ html, body {
 }
 label {
     font-weight: normal;
+	margin-bottom: 0;
 }
-.row, .btn {
+input[type=radio], input[type=checkbox] {
     margin: 0;
 }
 .btn {
+    margin: 0;
 	color: @white;
     text-transform: none;
 }
@@ -50,37 +50,23 @@ label {
     	color: @white;
 	}
 }
-.form-group {
-    margin-bottom: 7px;
-    label {
-        padding-top: 5px;
-    }
-    .secondary {
-        color: @grey-600;
-        padding: 0;
-		margin: 0;
-    }
+.secondary {
+	color: @grey-600;
+	padding: 0;
+	margin: 0;
+	font-size: 85%;
 }
 .form-icon {
     padding: 2px;
     line-height: 15px;
 }
-.form-single-select .ui-select-match-text {
-    padding-top: 4px;
-}
-.ui-select-small {
-    padding-left: 10px;
-}
-.btn.btn-sm.resetDate {
-	color: #757575;
-    padding: 4px 5px;
-    line-height: 13px;
-}
+
+// datepickers
 .datepicker {
     th, td {
         padding: 0px 1px;
     }
-    th {
+    th, strong {
         font-weight: normal;
     }
     thead th:first-child .btn.btn-sm, thead th:last-child .btn.btn-sm {
@@ -93,6 +79,12 @@ label {
     thead th:last-child .btn.btn-sm {
         margin-right: 11px;
     }
+    .text-muted { // hide days of other months
+        display: none;
+    }
+	.text-info { // current day with same color than others
+		color: rgba(0,0,0,.84);
+	}
     .btn {
         margin: 0;
         padding: 6px 28px;
@@ -104,46 +96,151 @@ label {
         -webkit-box-shadow: none;
         box-shadow: none;
     }
-    .text-muted {
-        display: none;
-    }
 	.btn-info .text-info {
 		color: @white;
 	}
-}
-.nav {
-    /*col-xs-2*/
-    width: 16.66666667%;
-    float: left;
-    position: relative;
-    min-height: 1px;
-    /*col-xs-2*/
-    padding: 0 0 0 4px;
-    & > li > a {
-        padding: 4px 0;
-        text-align: center;
-    }
-}
-.nav-pills > li.active > a {
-    &, &:focus, &:hover {
-		background-color: @grey-200;
-		color: @grey-900;
+	.btn, .btn-default {
+		&.active:not(.btn-link):not(.btn-flat):not(.btn-info) {
+			background-color: @grey-200;
+		}
 	}
 }
+
+// ui grid
 #grid-results {
     width: 448px;
 	height: 545px;
+	
+	.ui-grid-cell-contents {
+		padding: 5px 1px 5px 4px;
+		font-size: 13px;
+	}
+	.ui-grid-menu-button {
+		height: 28px;
+	}
+	.ui-grid-scrollbar-placeholder {
+		display: none;
+	}
+	.ui-grid-viewport {
+		overflow-x: hidden !important;
+	}
 }
-.ui-grid-cell-contents {
-    padding: 5px 1px 5px 4px;
-    font-size: 13px;
+
+// material design to replace ui-select
+.layout-row, .layout-column {
+	margin-bottom: 7px;
 }
-.ui-grid-menu-button {
-    height: 28px;
+md-content.md-default-theme, md-content {
+    background-color: @grey-50;
 }
-.ui-grid-scrollbar-placeholder {
-    display: none;
+md-input-container {
+    padding: 0 2px;
+	
+	&.md-input-focused, &.md-input-has-placeholder, &.md-input-has-value {
+		label:not(.md-no-float) {
+			-webkit-transform: translate3d(0, 6px, 0) scale(.85);
+			transform: translate3d(0, 6px, 0) scale(0.85);	
+		}
+	}
 }
-.ui-grid-viewport {
-	overflow-x: hidden !important;
+.md-chips-label {
+	line-height: @chip-height;
+}
+.md-chips {
+    font-size: 12px;
+    padding: 0 0 3px 3px;
+	
+	.md-chip {
+		border-radius: @chip-height / 2;
+		height: @chip-height;
+		line-height: @chip-height;
+		margin: 0px 5px 5px 0;
+		padding: 0 10px;
+		
+		.md-chip-remove {
+			width: @chip-height;
+			height: @chip-height;
+		}
+		.md-chip-content {
+			padding-right: 2px;
+		}
+		.md-chip-remove md-icon {
+			height: 16px;
+			width: 16px;
+		}
+	}
+	.md-chip-input-container:not(:first-child) {
+		margin: 0;
+	}
+	.md-chip-input-container {
+		line-height: @chip-height;
+		margin: 0;
+		padding: 0 5px;
+		
+    	md-autocomplete, md-autocomplete-wrap {
+			height: @chip-height;
+		}
+		input {
+			height: @chip-height;
+			line-height: @chip-height;
+		}
+		md-autocomplete input {
+			width: 355px;
+		}
+	}
+}
+.md-autocomplete-suggestions-container {
+	background: @white;
+    max-height: 170px;
+}
+.md-autocomplete-suggestions-container .md-autocomplete-suggestions li {
+	height: @select-height;
+	line-height: @select-height;
+	font-size: 14px;
+	font-weight: 400;
+
+	.autocomplete-small {
+		padding-left: 5px;
+	}
+}
+md-tabs-canvas, md-pagination-wrapper {
+    height: @select-height;
+}
+.md-tab {
+    font-size: 14px;
+    text-align: center;
+    line-height: @chip-height;
+    padding: 2px 10px;
+    text-transform: none;
+    font-weight: normal;
+}
+md-select-menu {
+	&, &.md-default-theme {
+		md-option:focus, md-option:hover {
+			background-color: @grey-200;
+		}
+	}
+}
+md-option {
+    height: @select-height;
+	
+	.md-text {
+		height: @select-height;
+		line-height: @select-height;
+		font-size: 14px;
+		font-weight: 400;
+	}
+}
+
+md-input-container {
+	&, &.md-default-theme {
+		&:not(.md-input-invalid).md-input-focused {
+			.md-input {
+				border-color: @primary;
+			}
+			label {
+				color: @primary;
+			}
+		}
+	} 
 }

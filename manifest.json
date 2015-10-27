@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "__MSG_extensionName__",
 	"short_name": "Genghis",
-	"version": "2.2",
+	"version": "2.4.1",
 	"default_locale": "pt_BR",
 	"description": "__MSG_extensionDescription__",
 	"icons": {
@@ -11,7 +11,7 @@
 		"128": "dist/icon128.png"
 	},
 	"author": "Breno Vieira",
-	"homepage_url": "https://github.com/brenovieira/extensao",
+	"homepage_url": "https://github.com/brenovieira/extension",
 	"background": {
 		"scripts": [
 		  "dist/background.js"
